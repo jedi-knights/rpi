@@ -2,7 +2,6 @@ package pkg
 
 import (
 	"errors"
-	"fmt"
 )
 
 // https://sites.google.com/site/rpifordivisioniwomenssoccer/rpi-formula
@@ -48,7 +47,7 @@ func NewRPICalculator(matches []Match) (*RPICalculator, error) {
 WP is the winning percentage of the team being considered.
 - The WP is computed by taking the number of wins and dividing by the number of games played.
 */
-func (c *RPICalculator) CalculateWP(teamName string, skipTeamName string) (float64, error) {
+func (c *RPICalculator) CalculateWP(teamName, skipTeamName string) (float64, error) {
 	wins, losses, draws, err := c.CalculateWinsLossesDraws(teamName, skipTeamName)
 	if err != nil {
 		return 0.0, err
@@ -65,7 +64,7 @@ func (c *RPICalculator) CalculateWP(teamName string, skipTeamName string) (float
 }
 
 // Returns wins, losses, draws, err
-func (c *RPICalculator) CalculateWinsLossesDraws(teamName string, skipTeamName string) (int, int, int, error) {
+func (c *RPICalculator) CalculateWinsLossesDraws(teamName, skipTeamName string) (int, int, int, error) {
 	wins := 0
 	losses := 0
 	draws := 0
@@ -80,14 +79,14 @@ func (c *RPICalculator) CalculateWinsLossesDraws(teamName string, skipTeamName s
 		}
 
 		if match.IsDraw() {
-			draws += 1
+			draws++
 			continue
 		}
 
 		if match.IsWinner(teamName) {
-			wins += 1
+			wins++
 		} else {
-			losses += 1
+			losses++
 		}
 	}
 
@@ -98,7 +97,7 @@ func (c *RPICalculator) CalculateMatchesPlayed(teamName string) (int, error) {
 	count := 0
 	for _, match := range c.Matches {
 		if match.Contains(teamName) {
-			count += 1
+			count++
 		}
 	}
 
@@ -135,25 +134,4 @@ func (c *RPICalculator) CalculateOWP(teamName string) (float64, error) {
 
 func (c *RPICalculator) CalculateOOWP() (float32, error) {
 	return 0.0, errors.New("todo")
-}
-
-func (c *RPICalculator) Calculate(statistic string, teamName string) (float64, error) {
-	if statistic == "WP" {
-		wp, err := c.CalculateWP(teamName, "")
-
-		if err != nil {
-			return 0.0, err
-		}
-
-		return wp, nil
-	} else if statistic == "OWP" {
-
-	} else if statistic == "OOWP" {
-	} else if statistic == "WINS" {
-
-	} else {
-		return 0.0, fmt.Errorf("the statistic <%s> is not supported", statistic)
-	}
-
-	return 0.0, nil
 }
