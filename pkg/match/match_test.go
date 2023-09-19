@@ -1,16 +1,16 @@
-package pkg_test
+package match_test
 
 import (
-	"github.com/jedi-knights/rpi/pkg"
+	"github.com/jedi-knights/rpi/pkg/match"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("Match", func() {
-	var match *pkg.Match
+	var match *match.Match
 
 	BeforeEach(func() {
-		match = pkg.NewMatch()
+		match = match.NewMatch()
 	})
 
 	AfterEach(func() {
@@ -484,19 +484,19 @@ var _ = Describe("Match", func() {
 	Describe("GetOpponents", func() {
 		It("returns an error when the specified team is empty", func() {
 			// Arrange
-			matches := []*pkg.Match{
-				pkg.NewMatchBuilder().
+			matches := []*match.Match{
+				match.NewMatchBuilder().
 					BuildHomeName("Team A").
 					BuildAwayName("Team B").
 					GetInstance(),
-				pkg.NewMatchBuilder().
+				match.NewMatchBuilder().
 					BuildHomeName("Team B").
 					BuildAwayName("Team C").
 					GetInstance(),
 			}
 
 			// Act
-			teams, err := pkg.GetOpponents(matches, "")
+			teams, err := match.GetOpponents(matches, "")
 
 			// Assert
 			Expect(teams).To(BeNil())
@@ -506,19 +506,19 @@ var _ = Describe("Match", func() {
 
 		It("returns an empty slice when the specified team is not in any of the matches", func() {
 			// Arrange
-			matches := []*pkg.Match{
-				pkg.NewMatchBuilder().
+			matches := []*match.Match{
+				match.NewMatchBuilder().
 					BuildHomeName("Team A").
 					BuildAwayName("Team B").
 					GetInstance(),
-				pkg.NewMatchBuilder().
+				match.NewMatchBuilder().
 					BuildHomeName("Team B").
 					BuildAwayName("Team C").
 					GetInstance(),
 			}
 
 			// Act
-			answer, err := pkg.GetOpponents(matches, "Team D")
+			answer, err := match.GetOpponents(matches, "Team D")
 
 			// Assert
 			Expect(err).ToNot(HaveOccurred())
@@ -527,19 +527,19 @@ var _ = Describe("Match", func() {
 
 		It("returns the opponent names when the specified team is in all matches", func() {
 			// Arrange
-			matches := []*pkg.Match{
-				pkg.NewMatchBuilder().
+			matches := []*match.Match{
+				match.NewMatchBuilder().
 					BuildHomeName("Team A").
 					BuildAwayName("Team B").
 					GetInstance(),
-				pkg.NewMatchBuilder().
+				match.NewMatchBuilder().
 					BuildHomeName("Team B").
 					BuildAwayName("Team C").
 					GetInstance(),
 			}
 
 			// Act
-			answer, err := pkg.GetOpponents(matches, "Team B")
+			answer, err := match.GetOpponents(matches, "Team B")
 
 			// Assert
 			Expect(err).ToNot(HaveOccurred())
@@ -548,19 +548,19 @@ var _ = Describe("Match", func() {
 
 		It("returns the opponent names when the specified team is in some of the matches", func() {
 			// Arrange
-			matches := []*pkg.Match{
-				pkg.NewMatchBuilder().
+			matches := []*match.Match{
+				match.NewMatchBuilder().
 					BuildHomeName("Team A").
 					BuildAwayName("Team B").
 					GetInstance(),
-				pkg.NewMatchBuilder().
+				match.NewMatchBuilder().
 					BuildHomeName("Team B").
 					BuildAwayName("Team C").
 					GetInstance(),
 			}
 
 			// Act
-			answer, err := pkg.GetOpponents(matches, "Team A")
+			answer, err := match.GetOpponents(matches, "Team A")
 
 			// Assert
 			Expect(err).ToNot(HaveOccurred())

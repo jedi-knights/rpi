@@ -1,6 +1,8 @@
 package accumulators
 
-import "github.com/jedi-knights/rpi/pkg"
+import (
+	"github.com/jedi-knights/rpi/pkg/match"
+)
 
 // Losses is an accumulator that calculates the number of losses for a given team.
 type Losses struct {
@@ -15,7 +17,7 @@ func NewLosses(skipTeamName string) *Losses {
 }
 
 // Calculate returns the number of losses for a given team.
-func (w *Losses) Calculate(teamName string, matches *[]pkg.Match) (int, error) {
+func (w *Losses) Calculate(teamName string, matches *[]match.Match) (int, error) {
 	total := 0
 
 	for _, match := range *matches {

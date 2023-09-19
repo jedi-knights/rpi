@@ -2,8 +2,8 @@ package calculators
 
 import (
 	"fmt"
-	"github.com/jedi-knights/rpi/pkg"
 	"github.com/jedi-knights/rpi/pkg/accumulators"
+	"github.com/jedi-knights/rpi/pkg/match"
 )
 
 // WPCalculator is a calculator that calculates the winning percentage for a given team.
@@ -11,8 +11,7 @@ type WPCalculator struct {
 	skipTeamName      string
 	winsAccumulator   *accumulators.Wins
 	lossesAccumulator *accumulators.Losses
-	drawsAccumulator  *accumulators.Draws
-	matches           []*pkg.Match
+	drawsAccumulator  *accumulators.Ties
 }
 
 // NewWPCalculator returns a new WPCalculator.
@@ -21,12 +20,12 @@ func NewWPCalculator(skipTeamName string) *WPCalculator {
 		skipTeamName:      skipTeamName,
 		winsAccumulator:   accumulators.NewWins(skipTeamName),
 		lossesAccumulator: accumulators.NewLosses(skipTeamName),
-		drawsAccumulator:  accumulators.NewDraws(skipTeamName),
+		drawsAccumulator:  accumulators.NewTies(skipTeamName),
 	}
 }
 
 // Calculate returns the winning percentage for a given team.
-func (w *WPCalculator) Calculate(teamName string, matches *[]pkg.Match) (float64, error) {
+func (w *WPCalculator) Calculate(teamName string, matches *[]match.Match) (float64, error) {
 	if teamName == "" {
 		return 0.0, fmt.Errorf("teamName cannot be empty")
 	}

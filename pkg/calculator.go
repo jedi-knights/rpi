@@ -3,7 +3,9 @@ package pkg
 import (
 	"errors"
 	"fmt"
+	"github.com/jedi-knights/rpi/pkg/accumulators"
 	"github.com/jedi-knights/rpi/pkg/calculators"
+	"github.com/jedi-knights/rpi/pkg/match"
 )
 
 // https://sites.google.com/site/rpifordivisioniwomenssoccer/rpi-formula
@@ -27,17 +29,17 @@ type RPICalculator struct {
 	WPVAL   float64
 	OWPVAL  float64
 	OOWPVAL float64
-	Matches []Match
+	Matches []match.Match
 }
 
-func (c *RPICalculator) Init(matches []Match) {
+func (c *RPICalculator) Init(matches []match.Match) {
 	c.WPVAL = 0.35
 	c.OWPVAL = 0.35
 	c.OOWPVAL = 0.30
 	c.Matches = matches
 }
 
-func NewRPICalculator(matches []Match) (*RPICalculator, error) {
+func NewRPICalculator(matches []match.Match) (*RPICalculator, error) {
 	calculator := &RPICalculator{}
 
 	calculator.Init(matches)
@@ -138,7 +140,38 @@ func (c *RPICalculator) CalculateOOWP() (float32, error) {
 	return 0.0, errors.New("todo")
 }
 
-func Calculate(metric string, teamName string, matches *[]Match) (float64, error) {
+func Accumulate(metric, teamName, skipTeamName string, matches *[]match.Match) (int, error) {
+	switch metric {
+	case "Wins":
+		accumulator := accumulators.NewWins(skipTeamName)
+		result, err := accumulator.Calculate(teamName, matches)
+		if err != nil {
+			return 0, err
+		}
+
+		return result, nil
+	case "Losses":
+		accumulator := accumulators.NewLosses(skipTeamName)
+		result, err := accumulator.Calculate(teamName, matches)
+		if err != nil {
+			return 0, err
+		}
+
+		return result, nil
+	case "Ties":
+		accumulator := accumulators.NewTies(skipTeamName)
+		result, err := accumulator.Calculate(teamName, matches)
+		if err != nil {
+			return 0, err
+		}
+
+		return result, nil
+	default:
+		return 0, fmt.Errorf("the metric <%s> is unsupported", metric)
+	}
+}
+
+func Calculate(metric string, teamName string, matches *[]match.Match) (float64, error) {
 	switch metric {
 	case "WP":
 		calculator := calculators.NewWPCalculator("")

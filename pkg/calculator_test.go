@@ -1,5 +1,124 @@
 package pkg_test
 
+import (
+	"github.com/jedi-knights/rpi/pkg"
+	"github.com/jedi-knights/rpi/pkg/match"
+	. "github.com/onsi/ginkgo/v2"
+	. "github.com/onsi/gomega"
+)
+
+var _ = Describe("RPI", Ordered, func() {
+	var builder *match.MatchBuilder
+	var factory *match.MatchFactory
+	var matchSlice1 []string
+
+	BeforeAll(func() {
+		builder = match.NewMatchBuilder()
+		factory = match.NewMatchFactory(builder)
+
+		matchSlice1 = []string{
+			"2023-09-19,Team A,1,Team B,0",
+			"2023-09-19,Team A,1,Team C,0",
+			"2023-09-19,Team A,1,Team D,0",
+			"2023-09-19,Team A,1,Team E,0",
+			"2023-09-19,Team A,1,Team F,0",
+			"2023-09-19,Team A,1,Team G,0",
+			"2023-09-19,Team A,1,Team H,0",
+			"2023-09-19,Team A,1,Team I,0",
+			"2023-09-19,Team A,0,Team J,1",
+			"2023-09-19,Team A,0,Team K,1",
+			"2023-09-19,Team A,0,Team L,1",
+			"2023-09-19,Team A,0,Team M,1",
+			"2023-09-19,Team A,0,Team N,1",
+			"2023-09-19,Team A,0,Team O,1",
+			"2023-09-19,Team A,0,Team P,1",
+			"2023-09-19,Team A,0,Team Q,1",
+			"2023-09-19,Team A,0,Team R,0",
+			"2023-09-19,Team A,0,Team S,0",
+			"2023-09-19,Team A,0,Team T,0",
+			"2023-09-19,Team A,0,Team U,0",
+		}
+
+	})
+
+	AfterAll(func() {
+		matchSlice1 = nil
+		factory = nil
+		builder = nil
+	})
+
+	Describe("Accumulate", func() {
+		var matches []match.Match
+
+		BeforeAll(func() {
+			matches = []match.Match{}
+
+			for _, matchString := range matchSlice1 {
+				matches = append(matches, *factory.CreateFromString(matchString))
+			}
+		})
+
+		AfterAll(func() {
+			matches = nil
+		})
+
+		Context("with no skipped team", func() {
+			Describe("Wins", func() {
+				It("should return the number of wins for a team", func() {
+					// Act
+					wins, err := pkg.Accumulate("Wins", "Team A", "", &matches)
+
+					// Assert
+					Expect(wins).To(Equal(8))
+					Expect(err).NotTo(HaveOccurred())
+				})
+			})
+
+			Describe("Losses", func() {
+				It("should return the number of losses for a team", func() {
+					// Act
+					losses, err := pkg.Accumulate("Losses", "Team A", "", &matches)
+
+					// Assert
+					Expect(losses).To(Equal(8))
+					Expect(err).NotTo(HaveOccurred())
+				})
+			})
+
+			Describe("Ties", func() {
+				It("should return the number of ties for a team", func() {
+					// Act
+					ties, err := pkg.Accumulate("Ties", "Team A", "", &matches)
+
+					// Assert
+					Expect(ties).To(Equal(4))
+					Expect(err).NotTo(HaveOccurred())
+				})
+			})
+		})
+	})
+
+	Context("Element 1", func() {
+		Describe("WP", func() {
+			It("should return 0.5 for a team with a record of 8-8-4", func() {
+				// Arrange
+				matches := []match.Match{}
+
+				for _, matchString := range matchSlice1 {
+					matches = append(matches, *factory.CreateFromString(matchString))
+				}
+
+				// Act
+				wp, err := pkg.Calculate("WP", "Team A", &matches)
+
+				// Assert
+				Expect(wp).Should(BeNumerically("~", 0.5, 0.001))
+				Expect(err).NotTo(HaveOccurred())
+			})
+		})
+	})
+})
+
 //var _ = Describe("RPI", Ordered, func() {
 //	var matches []pkg.Match
 //

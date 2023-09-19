@@ -1,6 +1,8 @@
 package accumulators
 
-import "github.com/jedi-knights/rpi/pkg"
+import (
+	"github.com/jedi-knights/rpi/pkg/match"
+)
 
 // MatchesPlayed is an accumulator that calculates the number of Matches played by a team.
 type MatchesPlayed struct {
@@ -15,7 +17,7 @@ func NewMatchesPlayed(skipTeamName string) *MatchesPlayed {
 }
 
 // Calculate returns the number of Matches played by the given team.
-func (w *MatchesPlayed) Calculate(teamName string, matches *[]pkg.Match) (int, error) {
+func (w *MatchesPlayed) Calculate(teamName string, matches *[]match.Match) (int, error) {
 	total := 0
 
 	for _, match := range *matches {

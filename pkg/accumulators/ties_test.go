@@ -1,22 +1,22 @@
 package accumulators_test
 
 import (
-	"github.com/jedi-knights/rpi/pkg"
 	"github.com/jedi-knights/rpi/pkg/accumulators"
+	"github.com/jedi-knights/rpi/pkg/match"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("Draws", func() {
-	var matches []pkg.Match
-	var builder *pkg.MatchBuilder
-	var factory *pkg.MatchFactory
-	var drawsAccumulator *accumulators.Draws
+var _ = Describe("Ties", func() {
+	var matches []match.Match
+	var builder *match.MatchBuilder
+	var factory *match.MatchFactory
+	var drawsAccumulator *accumulators.Ties
 
 	BeforeEach(func() {
-		builder = pkg.NewMatchBuilder()
-		factory = pkg.NewMatchFactory(builder)
-		matches = []pkg.Match{}
+		builder = match.NewMatchBuilder()
+		factory = match.NewMatchFactory(builder)
+		matches = []match.Match{}
 	})
 
 	AfterEach(func() {
@@ -28,7 +28,7 @@ var _ = Describe("Draws", func() {
 	Context("empty skip team name", func() {
 		Describe("Calculate", func() {
 			BeforeEach(func() {
-				drawsAccumulator = accumulators.NewDraws("Team A")
+				drawsAccumulator = accumulators.NewTies("Team A")
 			})
 
 			AfterEach(func() {
@@ -62,7 +62,7 @@ var _ = Describe("Draws", func() {
 	Context("non-empty skip team name", func() {
 		Describe("Calculate", func() {
 			BeforeEach(func() {
-				drawsAccumulator = accumulators.NewDraws("Team A")
+				drawsAccumulator = accumulators.NewTies("Team A")
 			})
 
 			AfterEach(func() {

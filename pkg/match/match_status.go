@@ -1,4 +1,4 @@
-package pkg
+package match
 
 type MatchStatus struct {
 	Name  string

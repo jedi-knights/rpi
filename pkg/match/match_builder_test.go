@@ -1,17 +1,17 @@
-package pkg_test
+package match_test
 
 import (
-	"github.com/jedi-knights/rpi/pkg"
+	"github.com/jedi-knights/rpi/pkg/match"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"time"
 )
 
 var _ = Describe("MatchBuilder", func() {
-	var builder *pkg.MatchBuilder
+	var builder *match.MatchBuilder
 
 	BeforeEach(func() {
-		builder = pkg.NewMatchBuilder()
+		builder = match.NewMatchBuilder()
 	})
 
 	AfterEach(func() {

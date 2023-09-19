@@ -1,6 +1,8 @@
 package accumulators
 
-import "github.com/jedi-knights/rpi/pkg"
+import (
+	"github.com/jedi-knights/rpi/pkg/match"
+)
 
 // Wins is an accumulator that calculates the number of wins for a given team.
 type Wins struct {
@@ -15,7 +17,7 @@ func NewWins(skipTeamName string) *Wins {
 }
 
 // Calculate returns the number of wins for a given team.
-func (w *Wins) Calculate(teamName string, matches *[]pkg.Match) (int, error) {
+func (w *Wins) Calculate(teamName string, matches *[]match.Match) (int, error) {
 	total := 0
 
 	for _, match := range *matches {
