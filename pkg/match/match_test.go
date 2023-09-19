@@ -567,4 +567,91 @@ var _ = Describe("Match", func() {
 			Expect(answer).To(ConsistOf("Team B"))
 		})
 	})
+
+	Describe("GetMatchesPlayedBy", func() {
+		It("returns an error when the specified team is empty", func() {
+			// Arrange
+			matches := []match.Match{
+				*match.NewMatchBuilder().
+					BuildHomeName("Team A").
+					BuildAwayName("Team B").
+					GetInstance(),
+				*match.NewMatchBuilder().
+					BuildHomeName("Team B").
+					BuildAwayName("Team C").
+					GetInstance(),
+			}
+
+			// Act
+			pSubslice, err := match.GetMatchesPlayedBy(&matches, "")
+
+			// Assert
+			Expect(pSubslice).To(BeNil())
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(Equal("the specified team name is empty"))
+		})
+
+		It("returns an empty slice when the specified team is not in any of the matches", func() {
+			// Arrange
+			matches := []match.Match{
+				*match.NewMatchBuilder().
+					BuildHomeName("Team A").
+					BuildAwayName("Team B").
+					GetInstance(),
+				*match.NewMatchBuilder().
+					BuildHomeName("Team B").
+					BuildAwayName("Team C").
+					GetInstance(),
+			}
+
+			// Act
+			pSubslice, err := match.GetMatchesPlayedBy(&matches, "Team D")
+
+			// Assert
+			Expect(err).ToNot(HaveOccurred())
+			Expect(*pSubslice).To(BeEmpty())
+		})
+
+		It("returns the matches when the specified team is in all matches", func() {
+			// Arrange
+			matches := []match.Match{
+				*match.NewMatchBuilder().
+					BuildHomeName("Team A").
+					BuildAwayName("Team B").
+					GetInstance(),
+				*match.NewMatchBuilder().
+					BuildHomeName("Team B").
+					BuildAwayName("Team C").
+					GetInstance(),
+			}
+
+			// Act
+			pSubslice, err := match.GetMatchesPlayedBy(&matches, "Team B")
+
+			// Assert
+			Expect(err).ToNot(HaveOccurred())
+			Expect(*pSubslice).To(ConsistOf(matches[0], matches[1]))
+		})
+
+		It("returns a subset of matches when some of the matches contain the specified team", func() {
+			// Arrange
+			matches := []match.Match{
+				*match.NewMatchBuilder().
+					BuildHomeName("Team A").
+					BuildAwayName("Team B").
+					GetInstance(),
+				*match.NewMatchBuilder().
+					BuildHomeName("Team B").
+					BuildAwayName("Team C").
+					GetInstance(),
+			}
+
+			// Act
+			pSubslice, err := match.GetMatchesPlayedBy(&matches, "Team A")
+
+			// Assert
+			Expect(err).ToNot(HaveOccurred())
+			Expect(*pSubslice).To(ConsistOf(matches[0]))
+		})
+	})
 })
