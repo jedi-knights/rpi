@@ -16,13 +16,12 @@ type WPCalculator struct {
 }
 
 // NewWPCalculator returns a new WPCalculator.
-func NewWPCalculator(skipTeamName string, matches []*pkg.Match) *WPCalculator {
+func NewWPCalculator(skipTeamName string) *WPCalculator {
 	return &WPCalculator{
 		skipTeamName:      skipTeamName,
 		winsAccumulator:   accumulators.NewWins(skipTeamName),
 		lossesAccumulator: accumulators.NewLosses(skipTeamName),
 		drawsAccumulator:  accumulators.NewDraws(skipTeamName),
-		matches:           matches,
 	}
 }
 

@@ -2,6 +2,8 @@ package pkg
 
 import (
 	"errors"
+	"fmt"
+	"github.com/jedi-knights/rpi/pkg/calculators"
 )
 
 // https://sites.google.com/site/rpifordivisioniwomenssoccer/rpi-formula
@@ -134,4 +136,37 @@ func (c *RPICalculator) CalculateOWP(teamName string) (float64, error) {
 
 func (c *RPICalculator) CalculateOOWP() (float32, error) {
 	return 0.0, errors.New("todo")
+}
+
+func Calculate(metric string, teamName string, matches *[]Match) (float64, error) {
+	switch metric {
+	case "WP":
+		calculator := calculators.NewWPCalculator("")
+		result, err := calculator.Calculate(teamName, matches)
+		if err != nil {
+			return 0.0, err
+		}
+
+		return result, nil
+	case "OWP":
+		calculator := calculators.NewOWPCalculator()
+		result, err := calculator.Calculate(teamName, matches)
+		if err != nil {
+			return 0.0, err
+		}
+
+		return result, nil
+	case "OOWP":
+		calculator := calculators.NewOOWPCalculator()
+		result, err := calculator.Calculate(teamName, matches)
+		if err != nil {
+			return 0.0, err
+		}
+
+		return result, nil
+	case "RPI":
+		return 0.0, errors.New("todo")
+	default:
+		return 0.0, fmt.Errorf("the metric <%s> is unsupported", metric)
+	}
 }

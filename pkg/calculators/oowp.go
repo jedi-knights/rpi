@@ -2,16 +2,12 @@ package calculators
 
 import "github.com/jedi-knights/rpi/pkg"
 
-type OOWPCalculator struct {
-	matches []*pkg.Match
+type OOWPCalculator struct{}
+
+func NewOOWPCalculator() *OOWPCalculator {
+	return &OOWPCalculator{}
 }
 
-func NewOOWPCalculator(matches []*pkg.Match) *OOWPCalculator {
-	return &OOWPCalculator{
-		matches: matches,
-	}
-}
-
-func (w *OOWPCalculator) Calculate(teamName string) (float64, error) {
+func (w *OOWPCalculator) Calculate(teamName string, matches *[]pkg.Match) (float64, error) {
 	return 0.0, nil
 }

@@ -114,14 +114,14 @@ func (m *Match) GetOpponent(teamName string) (string, error) {
 }
 
 // GetOpponents returns the opponents for a given team.
-func GetOpponents(matches []*Match, teamName string) ([]string, error) {
+func GetOpponents(matches *[]Match, teamName string) ([]string, error) {
 	var opponents []string
 
 	if teamName == "" {
 		return nil, fmt.Errorf("the specified team name is empty")
 	}
 
-	for _, match := range matches {
+	for _, match := range *matches {
 		var err error
 		var opponentName string
 
