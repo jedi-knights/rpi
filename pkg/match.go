@@ -6,27 +6,31 @@ import (
 )
 
 type Match struct {
-	Date          time.Time
-	HomeTeamName  string
-	HomeTeamScore int
-	AwayTeamName  string
-	AwayTeamScore int
+	Date time.Time
+	Home MatchStatus
+	Away MatchStatus
 }
 
-func (m *Match) Init(date time.Time, homeTeamName string, homeTeamScore int, awayTeamName string, awayTeamScore int) {
-	m.Date = date
-	m.HomeTeamName = homeTeamName
-	m.HomeTeamScore = homeTeamScore
-	m.AwayTeamName = awayTeamName
-	m.AwayTeamScore = awayTeamScore
+func NewMatch() *Match {
+	return &Match{
+		Date: time.Now(),
+		Home: MatchStatus{
+			Name:  "",
+			Score: 0,
+		},
+		Away: MatchStatus{
+			Name:  "",
+			Score: 0,
+		},
+	}
 }
 
 func (m *Match) IsHomeTeam(teamName string) bool {
-	return teamName == m.HomeTeamName
+	return teamName == m.Home.Name
 }
 
 func (m *Match) IsAwayTeam(teamName string) bool {
-	return teamName == m.AwayTeamName
+	return teamName == m.Away.Name
 }
 
 func (m *Match) Contains(teamName string) bool {
@@ -34,7 +38,7 @@ func (m *Match) Contains(teamName string) bool {
 }
 
 func (m *Match) IsDraw() bool {
-	return m.HomeTeamScore == m.AwayTeamScore
+	return m.Home.Score == m.Away.Score
 }
 
 func (m *Match) IsWinner(teamName string) bool {
@@ -48,10 +52,10 @@ func (m *Match) IsWinner(teamName string) bool {
 
 	answer := false
 
-	if m.HomeTeamName == teamName {
-		answer = m.HomeTeamScore > m.AwayTeamScore
-	} else if m.AwayTeamName == teamName {
-		answer = m.AwayTeamScore > m.HomeTeamScore
+	if m.Home.Name == teamName {
+		answer = m.Home.Score > m.Away.Score
+	} else if m.Away.Name == teamName {
+		answer = m.Away.Score > m.Home.Score
 	}
 
 	return answer
@@ -68,10 +72,10 @@ func (m *Match) IsLoser(teamName string) bool {
 
 	answer := false
 
-	if m.HomeTeamName == teamName {
-		answer = m.HomeTeamScore < m.AwayTeamScore
-	} else if m.AwayTeamName == teamName {
-		answer = m.AwayTeamScore < m.HomeTeamScore
+	if m.Home.Name == teamName {
+		answer = m.Home.Score < m.Away.Score
+	} else if m.Away.Name == teamName {
+		answer = m.Away.Score < m.Home.Score
 	}
 
 	return answer
@@ -94,13 +98,39 @@ func (m *Match) WinValue(teamName string) float64 {
 }
 
 func (m *Match) GetOpponent(teamName string) (string, error) {
+	if teamName == "" {
+		return "", fmt.Errorf("the specified team name is empty")
+	}
+
 	if !m.Contains(teamName) {
 		return "", fmt.Errorf("the match doesn't contain the team <%s>", teamName)
 	}
 
-	if m.HomeTeamName == teamName {
-		return m.AwayTeamName, nil
+	if m.Home.Name == teamName {
+		return m.Away.Name, nil
 	}
 
-	return m.HomeTeamName, nil
+	return m.Home.Name, nil
+}
+
+// GetOpponents returns the opponents for a given team.
+func GetOpponents(matches []*Match, teamName string) ([]string, error) {
+	var opponents []string
+
+	if teamName == "" {
+		return nil, fmt.Errorf("the specified team name is empty")
+	}
+
+	for _, match := range matches {
+		var err error
+		var opponentName string
+
+		if opponentName, err = match.GetOpponent(teamName); err != nil {
+			continue
+		}
+
+		opponents = append(opponents, opponentName)
+	}
+
+	return opponents, nil
 }
