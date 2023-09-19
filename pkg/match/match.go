@@ -134,3 +134,20 @@ func GetOpponents(matches *[]Match, teamName string) ([]string, error) {
 
 	return opponents, nil
 }
+
+// GetMatchesPlayedBy returns the matches played by a given team.
+func GetMatchesPlayedBy(matches *[]Match, teamName string) (*[]Match, error) {
+	var matchesPlayed []Match
+
+	if teamName == "" {
+		return nil, fmt.Errorf("the specified team name is empty")
+	}
+
+	for _, match := range *matches {
+		if match.Contains(teamName) {
+			matchesPlayed = append(matchesPlayed, match)
+		}
+	}
+
+	return &matchesPlayed, nil
+}

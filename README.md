@@ -36,6 +36,10 @@ Element 1 tells only Team A's wins and ties compared to its games played.  It te
 
 ### Element 2: Opponents' Average Winning Percentage Against Other Teams (OWP))
 
+Element 2 measures a team's opponents'  average winning percentage (against teams other than Team A).  The NCAA's stated purpose of Element 2, combined with Element 3, is to measure the strength of schedule against which Team A achieved its Element 1 Winning Percentage.
+
+To determine Team A's opponents' average winning percentage, the NCAA first computes, for each of Team A's opponents, the opponent's wins and ties as compared to the opponent's total games played, in the same way it does the calculation for Team A's Element 1.  The only difference is that the NCAA excludes the opponent's games against Team A itself.  Thus this first part of the computation determines each opponent's Element 1 based on games played against teams other than Team A.
+
 ## References
 
 * [RPI: Formula](https://sites.google.com/site/rpifordivisioniwomenssoccer/rpi-formula)
