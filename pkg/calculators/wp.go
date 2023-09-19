@@ -19,30 +19,30 @@ type WPCalculator struct {
 func NewWPCalculator(skipTeamName string, matches []*pkg.Match) *WPCalculator {
 	return &WPCalculator{
 		skipTeamName:      skipTeamName,
-		winsAccumulator:   accumulators.NewWins(skipTeamName, matches),
-		lossesAccumulator: accumulators.NewLosses(skipTeamName, matches),
-		drawsAccumulator:  accumulators.NewDraws(skipTeamName, matches),
+		winsAccumulator:   accumulators.NewWins(skipTeamName),
+		lossesAccumulator: accumulators.NewLosses(skipTeamName),
+		drawsAccumulator:  accumulators.NewDraws(skipTeamName),
 		matches:           matches,
 	}
 }
 
 // Calculate returns the winning percentage for a given team.
-func (w *WPCalculator) Calculate(teamName string) (float64, error) {
+func (w *WPCalculator) Calculate(teamName string, matches *[]pkg.Match) (float64, error) {
 	if teamName == "" {
 		return 0.0, fmt.Errorf("teamName cannot be empty")
 	}
 
-	wins, err := w.winsAccumulator.Calculate(teamName)
+	wins, err := w.winsAccumulator.Calculate(teamName, matches)
 	if err != nil {
 		return 0.0, err
 	}
 
-	losses, err := w.lossesAccumulator.Calculate(teamName)
+	losses, err := w.lossesAccumulator.Calculate(teamName, matches)
 	if err != nil {
 		return 0.0, err
 	}
 
-	draws, err := w.drawsAccumulator.Calculate(teamName)
+	draws, err := w.drawsAccumulator.Calculate(teamName, matches)
 	if err != nil {
 		return 0.0, err
 	}

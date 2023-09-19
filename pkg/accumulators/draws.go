@@ -4,28 +4,26 @@ import "github.com/jedi-knights/rpi/pkg"
 
 // Draws is an accumulator that calculates the number of draws for a given team.
 type Draws struct {
-	skipTeamName string
-	matches      *[]pkg.Match
+	SkipTeamName string
 }
 
 // NewDraws returns a new Draws accumulator.
-func NewDraws(skipTeamName string, matches *[]pkg.Match) *Draws {
+func NewDraws(skipTeamName string) *Draws {
 	return &Draws{
-		skipTeamName: skipTeamName,
-		matches:      matches,
+		SkipTeamName: skipTeamName,
 	}
 }
 
 // Calculate returns the number of draws for a given team.
-func (w *Draws) Calculate(teamName string) (int, error) {
+func (w *Draws) Calculate(teamName string, matches *[]pkg.Match) (int, error) {
 	total := 0
 
-	for _, match := range *w.matches {
+	for _, match := range *matches {
 		if !match.Contains(teamName) {
 			continue
 		}
 
-		if len(w.skipTeamName) > 0 && match.Contains(w.skipTeamName) {
+		if len(w.SkipTeamName) > 0 && match.Contains(w.SkipTeamName) {
 			continue
 		}
 
