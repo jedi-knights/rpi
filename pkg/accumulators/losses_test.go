@@ -9,13 +9,13 @@ import (
 
 var _ = Describe("Losses", func() {
 	var matches []match.Match
-	var builder *match.MatchBuilder
-	var factory *match.MatchFactory
+	var builder *match.Builder
+	var factory *match.Factory
 	var lossesAccumulator *accumulators.Losses
 
 	BeforeEach(func() {
-		builder = match.NewMatchBuilder()
-		factory = match.NewMatchFactory(builder)
+		builder = match.NewBuilder()
+		factory = match.NewFactory(builder)
 		matches = []match.Match{}
 	})
 
@@ -47,11 +47,8 @@ var _ = Describe("Losses", func() {
 			})
 
 			It("should return 0 when the team name is not found", func() {
-				// Arrange
-				teamName := "Ashland Blazer"
-
 				// Act
-				losses, _ := lossesAccumulator.Calculate(teamName, &matches)
+				losses, _ := lossesAccumulator.Calculate("whatever", &matches)
 
 				// Assert
 				Expect(losses).To(Equal(0))

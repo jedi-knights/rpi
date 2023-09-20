@@ -8,13 +8,13 @@ import (
 )
 
 var _ = Describe("RPI", Ordered, func() {
-	var builder *match.MatchBuilder
-	var factory *match.MatchFactory
+	var builder *match.Builder
+	var factory *match.Factory
 	var matchSlice1 []string
 
 	BeforeAll(func() {
-		builder = match.NewMatchBuilder()
-		factory = match.NewMatchFactory(builder)
+		builder = match.NewBuilder()
+		factory = match.NewFactory(builder)
 
 		matchSlice1 = []string{
 			"2023-09-19,Team A,1,Team B,0",
@@ -119,7 +119,7 @@ var _ = Describe("RPI", Ordered, func() {
 	})
 })
 
-//var _ = Describe("RPI", Ordered, func() {
+// var _ = Describe("RPI", Ordered, func() {
 //	var matches []pkg.Match
 //
 //	BeforeAll(func() {

@@ -20,16 +20,16 @@ func NewTies(skipTeamName string) *Ties {
 func (w *Ties) Calculate(teamName string, matches *[]match.Match) (int, error) {
 	total := 0
 
-	for _, match := range *matches {
-		if !match.Contains(teamName) {
+	for _, currentMatch := range *matches {
+		if !currentMatch.Contains(teamName) {
 			continue
 		}
 
-		if len(w.SkipTeamName) > 0 && match.Contains(w.SkipTeamName) {
+		if len(w.SkipTeamName) > 0 && currentMatch.Contains(w.SkipTeamName) {
 			continue
 		}
 
-		if match.IsDraw() {
+		if currentMatch.IsDraw() {
 			total++
 		}
 	}

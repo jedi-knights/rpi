@@ -9,13 +9,13 @@ import (
 
 var _ = Describe("Ties", func() {
 	var matches []match.Match
-	var builder *match.MatchBuilder
-	var factory *match.MatchFactory
+	var builder *match.Builder
+	var factory *match.Factory
 	var drawsAccumulator *accumulators.Ties
 
 	BeforeEach(func() {
-		builder = match.NewMatchBuilder()
-		factory = match.NewMatchFactory(builder)
+		builder = match.NewBuilder()
+		factory = match.NewFactory(builder)
 		matches = []match.Match{}
 	})
 

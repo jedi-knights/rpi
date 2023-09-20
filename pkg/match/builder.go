@@ -2,7 +2,7 @@ package match
 
 import "time"
 
-type MatchBuilder struct {
+type Builder struct {
 	date      time.Time
 	homeName  string
 	homeScore int
@@ -10,8 +10,8 @@ type MatchBuilder struct {
 	awayScore int
 }
 
-func NewMatchBuilder() *MatchBuilder {
-	return &MatchBuilder{
+func NewBuilder() *Builder {
+	return &Builder{
 		date:      time.Now(),
 		homeName:  "",
 		homeScore: 0,
@@ -20,32 +20,32 @@ func NewMatchBuilder() *MatchBuilder {
 	}
 }
 
-func (m *MatchBuilder) BuildDate(date time.Time) *MatchBuilder {
+func (m *Builder) BuildDate(date time.Time) *Builder {
 	m.date = date
 	return m
 }
 
-func (m *MatchBuilder) BuildHomeName(homeName string) *MatchBuilder {
+func (m *Builder) BuildHomeName(homeName string) *Builder {
 	m.homeName = homeName
 	return m
 }
 
-func (m *MatchBuilder) BuildHomeScore(homeScore int) *MatchBuilder {
+func (m *Builder) BuildHomeScore(homeScore int) *Builder {
 	m.homeScore = homeScore
 	return m
 }
 
-func (m *MatchBuilder) BuildAwayName(awayName string) *MatchBuilder {
+func (m *Builder) BuildAwayName(awayName string) *Builder {
 	m.awayName = awayName
 	return m
 }
 
-func (m *MatchBuilder) BuildAwayScore(awayScore int) *MatchBuilder {
+func (m *Builder) BuildAwayScore(awayScore int) *Builder {
 	m.awayScore = awayScore
 	return m
 }
 
-func (m *MatchBuilder) GetInstance() *Match {
+func (m *Builder) GetInstance() *Match {
 	match := NewMatch()
 
 	match.Date = m.date

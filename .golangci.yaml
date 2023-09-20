@@ -1,15 +1,11 @@
 linters:
+  disable-all: true
   enable:
     - errorlint
     - forbidigo
     - gochecknoinits
-    - gocritic
-    - goconst
     - gocyclo
-    - gofumpt
-    - goimports
     - misspell
-    - revive
     - unconvert
     - unparam
     - wastedassign

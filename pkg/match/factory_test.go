@@ -6,13 +6,13 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("MatchFactory", func() {
-	var builder *match.MatchBuilder
-	var factory *match.MatchFactory
+var _ = Describe("Factory", func() {
+	var builder *match.Builder
+	var factory *match.Factory
 
 	BeforeEach(func() {
-		builder = match.NewMatchBuilder()
-		factory = match.NewMatchFactory(builder)
+		builder = match.NewBuilder()
+		factory = match.NewFactory(builder)
 	})
 
 	AfterEach(func() {

@@ -2,23 +2,24 @@ package match
 
 import (
 	"fmt"
+	"slices"
 	"time"
 )
 
 type Match struct {
 	Date time.Time
-	Home MatchStatus
-	Away MatchStatus
+	Home Status
+	Away Status
 }
 
 func NewMatch() *Match {
 	return &Match{
 		Date: time.Now(),
-		Home: MatchStatus{
+		Home: Status{
 			Name:  "",
 			Score: 0,
 		},
-		Away: MatchStatus{
+		Away: Status{
 			Name:  "",
 			Score: 0,
 		},
@@ -113,6 +114,10 @@ func (m *Match) GetOpponent(teamName string) (string, error) {
 	return m.Home.Name, nil
 }
 
+func (m *Match) ToString() string {
+	return fmt.Sprintf("[%s] %d, [%s] %d", m.Home.Name, m.Home.Score, m.Away.Name, m.Away.Score)
+}
+
 // GetOpponents returns the opponents for a given team.
 func GetOpponents(matches *[]Match, teamName string) ([]string, error) {
 	var opponents []string
@@ -129,7 +134,9 @@ func GetOpponents(matches *[]Match, teamName string) ([]string, error) {
 			continue
 		}
 
-		opponents = append(opponents, opponentName)
+		if !slices.Contains(opponents, opponentName) {
+			opponents = append(opponents, opponentName)
+		}
 	}
 
 	return opponents, nil
@@ -147,6 +154,95 @@ func GetMatchesPlayedBy(matches *[]Match, teamName string) (*[]Match, error) {
 		if match.Contains(teamName) {
 			matchesPlayed = append(matchesPlayed, match)
 		}
+	}
+
+	return &matchesPlayed, nil
+}
+
+// GetMatchesBetween returns the matches played between two teams.
+func GetMatchesBetween(matches *[]Match, teamA string, teamB string) (*[]Match, error) {
+	var matchesPlayed []Match
+
+	if teamA == "" {
+		return nil, fmt.Errorf("the first specified team name is empty")
+	}
+
+	if teamB == "" {
+		return nil, fmt.Errorf("the second specified team name is empty")
+	}
+
+	matchesPlayed = make([]Match, 0)
+
+	for _, currentMatch := range *matches {
+		if !currentMatch.Contains(teamA) {
+			continue
+		}
+
+		if !currentMatch.Contains(teamB) {
+			continue
+		}
+
+		matchesPlayed = append(matchesPlayed, currentMatch)
+	}
+
+	return &matchesPlayed, nil
+}
+
+// GetMeetingCount returns the number of meetings between two teams.
+func GetMeetingCount(matches *[]Match, teamA string, teamB string) (int, error) {
+	var meetingCount int
+
+	if teamA == "" {
+		return 0, fmt.Errorf("the first specified team name is empty")
+	}
+
+	if teamB == "" {
+		return 0, fmt.Errorf("the second specified team name is empty")
+	}
+
+	for _, currentMatch := range *matches {
+		if !currentMatch.Contains(teamA) {
+			continue
+		}
+
+		if !currentMatch.Contains(teamB) {
+			continue
+		}
+
+		meetingCount++
+	}
+
+	return meetingCount, nil
+}
+
+// GetMatchesPlayedByOpponents returns the matches played by the opponents of a given team.
+// This excludes all matches played by the given team.
+func GetMatchesPlayedByOpponents(matches *[]Match, teamName string) (*[]Match, error) {
+	var matchesPlayed []Match
+
+	if teamName == "" {
+		return nil, fmt.Errorf("the specified team name is empty")
+	}
+
+	opponents, err := GetOpponents(matches, teamName)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(opponents) == 0 {
+		return nil, fmt.Errorf("the specified opponents slice is empty")
+	}
+
+	for _, match := range *matches {
+		if match.Contains(teamName) {
+			continue
+		}
+
+		if !slices.Contains(opponents, match.Home.Name) && !slices.Contains(opponents, match.Away.Name) {
+			continue
+		}
+
+		matchesPlayed = append(matchesPlayed, match)
 	}
 
 	return &matchesPlayed, nil

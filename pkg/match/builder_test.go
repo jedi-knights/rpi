@@ -7,11 +7,11 @@ import (
 	"time"
 )
 
-var _ = Describe("MatchBuilder", func() {
-	var builder *match.MatchBuilder
+var _ = Describe("Builder", func() {
+	var builder *match.Builder
 
 	BeforeEach(func() {
-		builder = match.NewMatchBuilder()
+		builder = match.NewBuilder()
 	})
 
 	AfterEach(func() {

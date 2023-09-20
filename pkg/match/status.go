@@ -1,6 +1,6 @@
 package match
 
-type MatchStatus struct {
+type Status struct {
 	Name  string
 	Score int
 }
