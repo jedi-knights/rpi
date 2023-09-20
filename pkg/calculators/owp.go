@@ -113,6 +113,13 @@ func (w *OWPCalculator) Calculate(targetTeamName string, matches *[]match.Match)
 	// now we need to determine the average of these winning percentages
 
 	// determine the sum of the winning percentages
+	// Note: this calculation is a bit tricky because it depends on the number of meetings between the target team
+	// and the opponent.  For example, if Team A has played Team B 3 times and Team C 2 times, then the sum of the
+	// winning percentages is:
+	//   (Team B's WP * 3) + (Team C's WP * 2)
+	// but you also have to keep track of the total matches played with respect to each opponent.  For example, if
+	// Team B has played 3 matches against Team A and 2 matches against Team C, then the total matches played is:
+	//   3 + 2 = 5
 	var sum float64
 	numberOfMatches := 0
 	for opponentName, wp := range opponentWinningPercentageMap {
