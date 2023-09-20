@@ -13,50 +13,6 @@ func NewOWPCalculator() *OWPCalculator {
 	return &OWPCalculator{}
 }
 
-//func ProcessSomething(targetTeamName, opponentName string, matches *[]match.Match) (float64, error) {
-//	var err error
-//	var OW, OL, OT int
-//
-//	winsAccumulator := accumulators.NewWins(targetTeamName)
-//	lossesAccumulator := accumulators.NewLosses(targetTeamName)
-//	tiesAccumulator := accumulators.NewTies(targetTeamName)
-//
-//	if OW, err = winsAccumulator.Calculate(opponentName, matches); err != nil {
-//		return 0.0, err
-//	}
-//
-//	if OL, err = lossesAccumulator.Calculate(opponentName, matches); err != nil {
-//		return 0.0, err
-//	}
-//
-//	if OT, err = tiesAccumulator.Calculate(opponentName, matches); err != nil {
-//		return 0.0, err
-//	}
-//
-//	// retrieve a subslice of matches played between the target team and the current opponent
-//	pSubslice, err := match.GetMatchesBetween(matches, targetTeamName, opponentName)
-//	if err != nil {
-//		return 0.0, err
-//	}
-//
-//	for _, meeting := range *pSubslice {
-//		var portion float64
-//
-//		if meeting.IsWinner(targetTeamName) {
-//			// the target team won the match
-//			portion = (float64(OW) + 0.5*float64(OT)) / float64(OW+(OL-1)+OT)
-//		} else if meeting.IsDraw() {
-//			// the match was a draw
-//			portion = (float64(OW) + 0.5*float64(OT-1)) / float64(OW+OL+(OT-1))
-//		} else {
-//			// the target team lost the match
-//			portion = (float64(OW-1) + 0.5*float64(OT)) / float64((OW-1)+OL+OT)
-//		}
-//
-//		// portions = append(portions, portion)
-//	}
-//}
-
 // Calculate returns the specified team's opponents' average winning percentage.
 // To determine Team A's opponents' average winning percentage, the NCAA first computes, for each of Team A's
 // opponents, the opponent's wins and ties as compared to the opponent's total games played, in the same way it
