@@ -40,7 +40,7 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: '1.21'
-      - uses: go-semantic-release/action@v1
+      - uses: go-semantic-release/action@v1.21.0
         with:
           hooks: goreleaser
       - run: make release
