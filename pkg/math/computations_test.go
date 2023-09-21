@@ -13,7 +13,7 @@ var _ = Describe("Math", func() {
 			numbers := []float64{1.0, 2.0, 3.0}
 
 			// Act
-			average, err := math.ComputeAverage(numbers)
+			average, err := math.ComputeAverage[float64](numbers)
 
 			// Assert
 			Expect(err).ToNot(HaveOccurred())
@@ -25,7 +25,7 @@ var _ = Describe("Math", func() {
 			numbers := []float64{}
 
 			// Act
-			average, err := math.ComputeAverage(numbers)
+			average, err := math.ComputeAverage[float64](numbers)
 
 			// Assert
 			Expect(err).ToNot(HaveOccurred())
@@ -37,7 +37,7 @@ var _ = Describe("Math", func() {
 			var numbers []float64
 
 			// Act
-			average, err := math.ComputeAverage(numbers)
+			average, err := math.ComputeAverage[float64](numbers)
 
 			// Assert
 			Expect(err).ToNot(HaveOccurred())
@@ -49,11 +49,23 @@ var _ = Describe("Math", func() {
 			numbers := []float64{1.0}
 
 			// Act
-			average, err := math.ComputeAverage(numbers)
+			average, err := math.ComputeAverage[float64](numbers)
 
 			// Assert
 			Expect(err).ToNot(HaveOccurred())
 			Expect(average).To(Equal(1.0))
+		})
+
+		It("should return the average of a list of integers", func() {
+			// Arrange
+			numbers := []int{1, 2, 3}
+
+			// Act
+			average, err := math.ComputeAverage[int](numbers)
+
+			// Assert
+			Expect(err).ToNot(HaveOccurred())
+			Expect(average).To(Equal(2.0))
 		})
 	})
 })

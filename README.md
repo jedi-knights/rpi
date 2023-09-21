@@ -43,3 +43,4 @@ To determine Team A's opponents' average winning percentage, the NCAA first comp
 ## References
 
 * [RPI: Formula](https://sites.google.com/site/rpifordivisioniwomenssoccer/rpi-formula)
+* [Ratings Percentage Index](https://en.wikipedia.org/wiki/Rating_percentage_index)

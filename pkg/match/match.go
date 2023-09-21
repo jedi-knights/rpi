@@ -3,6 +3,8 @@ package match
 import (
 	"fmt"
 	"slices"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -24,6 +26,48 @@ func NewMatch() *Match {
 			Score: 0,
 		},
 	}
+}
+
+func NewMatchFromString(matchString string) *Match {
+	var err error
+	tokens := strings.Split(matchString, ",")
+
+	if len(tokens) == 5 {
+		newMatch := NewMatch()
+
+		newMatch.Home.Name = tokens[1]
+		newMatch.Away.Name = tokens[3]
+
+		if newMatch.Date, err = time.Parse("2006-01-02", tokens[0]); err != nil {
+			return nil
+		}
+		if newMatch.Home.Score, err = strconv.Atoi(tokens[2]); err != nil {
+			return nil
+		}
+		if newMatch.Away.Score, err = strconv.Atoi(tokens[4]); err != nil {
+			return nil
+		}
+
+		return newMatch
+	} else if len(tokens) == 4 {
+		newMatch := NewMatch()
+
+		newMatch.Date = time.Now()
+
+		newMatch.Home.Name = tokens[0]
+		newMatch.Away.Name = tokens[2]
+
+		if newMatch.Home.Score, err = strconv.Atoi(tokens[1]); err != nil {
+			return nil
+		}
+		if newMatch.Away.Score, err = strconv.Atoi(tokens[3]); err != nil {
+			return nil
+		}
+
+		return newMatch
+	}
+
+	return nil
 }
 
 func (m *Match) IsHomeTeam(teamName string) bool {
@@ -115,6 +159,10 @@ func (m *Match) GetOpponent(teamName string) (string, error) {
 }
 
 func (m *Match) ToString() string {
+	return fmt.Sprintf("%s,%d,%s,%d", m.Home.Name, m.Home.Score, m.Away.Name, m.Away.Score)
+}
+
+func (m *Match) ToFullString() string {
 	return fmt.Sprintf("[%s] %d, [%s] %d", m.Home.Name, m.Home.Score, m.Away.Name, m.Away.Score)
 }
 

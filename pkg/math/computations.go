@@ -6,27 +6,29 @@ import (
 	"math"
 )
 
-func ComputeAverage(numbers []float64) (float64, error) {
-	total := 0.0
+func ComputeAverage[T int | int64 | float64](numbers []T) (float64, error) {
+	var total = float64(0.0)
 
 	if len(numbers) == 0 {
 		return 0.0, nil
 	}
 
 	for _, number := range numbers {
-		if math.IsInf(number, 1) {
+		float64Number := float64(number)
+
+		if math.IsInf(float64Number, 1) {
 			return 0.0, fmt.Errorf(errors.ErrPositiveInfinity)
 		}
 
-		if math.IsInf(number, -1) {
+		if math.IsInf(float64Number, -1) {
 			return 0.0, fmt.Errorf(errors.ErrNegativeInfinity)
 		}
 
-		if math.IsNaN(number) {
+		if math.IsNaN(float64Number) {
 			return 0.0, fmt.Errorf(errors.ErrNotANumber)
 		}
 
-		total += number
+		total += float64Number
 	}
 
 	return total / float64(len(numbers)), nil
