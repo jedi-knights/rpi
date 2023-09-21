@@ -22,3 +22,6 @@ go.work
 
 # IntelliJ IDEA
 .idea
+
+# Node.js
+node_modules
